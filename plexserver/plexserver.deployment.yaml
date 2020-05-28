@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plexserver
+  labels:
+    app: plexserver
+spec:
+  selector:
+    matchLabels:
+      app: plexserver
+  template:
+    metadata:
+      labels:
+        app: plexserver
+    spec:
+      hostname: plexserver
+      containers:
+      - name: plexserver
+        image: linuxserver/plex
+        ports:
+        - containerPort: 32400
+        volumeMounts:
+        - mountPath: /config
+          name: config
+        - mountPath: /data/tvshows
+          name: tv
+        - mountPath: /data/movies
+          name: movies
+        resources: {}
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: VERSION
+          value: "docker"
+      volumes:
+      - name: config
+        hostPath:
+          path: /mnt/ssd/plex/config
+          type: Directory
+      - name: tv
+        hostPath:
+          path: /mnt/media/tv
+          type: Directory
+      - name: movies
+        hostPath:
+          path: /mnt/media/movies
+          type: Directory

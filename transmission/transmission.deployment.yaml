@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transmission
+  labels:
+    app: transmission
+spec:
+  selector:
+    matchLabels:
+      app: transmission
+  template:
+    metadata:
+      labels:
+        app: transmission
+    spec:
+      containers:
+      - name: transmission
+        image: haugene/transmission-openvpn
+        ports:
+        - containerPort: 9091
+        volumeMounts:
+        - mountPath: /data
+          name: torrents
+        resources: {}
+        env:
+        - name: CREATE_TUN_DEVICE
+          value: "true"        
+        - name: OPENVPN_PROVIDER
+          value: "PIA"
+        # kubectl create secret generic pia-user-pass --from-literal=username=*****  --from-literal=password=*****
+        - name: OPENVPN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: pia-user-pass
+              key: username
+        - name: OPENVPN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pia-user-pass
+              key: password
+        - name: LOCAL_NETWORK
+          value: "192.168.0.0/16"
+        - name: WEBPROXY_ENABLED
+          value: "false"
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 8.8.8.8
+          - 8.8.4.4
+      volumes:
+      - name: torrents
+        hostPath:
+          path: /mnt/media/torrents
+          type: Directory
