@@ -1,0 +1,1 @@
+Some kubernetes yaml for personal server use. 

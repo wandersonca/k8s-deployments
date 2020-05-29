@@ -27,7 +27,6 @@ spec:
           value: "true"        
         - name: OPENVPN_PROVIDER
           value: "PIA"
-        # kubectl create secret generic pia-user-pass --from-literal=username=*****  --from-literal=password=*****
         - name: OPENVPN_USERNAME
           valueFrom:
             secretKeyRef:

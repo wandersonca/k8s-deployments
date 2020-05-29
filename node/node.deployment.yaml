@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeserver
+  labels:
+    app: nodeserver
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodeserver
+  template:
+    metadata:
+      labels:
+        app: nodeserver
+    spec:
+      hostname: nodeserver
+      containers:
+      - name: nodeserver
+        image: nginx
+        ports:
+        - containerPort: 80
+        resources: {}
