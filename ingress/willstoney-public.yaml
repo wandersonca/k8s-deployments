@@ -18,3 +18,10 @@ spec:
         backend:
           serviceName: node-service
           servicePort: 80
+  - host: ci.willstoney.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: jenkins-service
+          servicePort: 8080

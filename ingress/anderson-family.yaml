@@ -1,0 +1,37 @@
+# 
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: anderson-family-public-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts:
+    - ci.anderson-family.ca
+    - anderson-family.ca
+    - www.anderson-family.ca
+    secretName: anderson-family-tls
+  rules:
+  - host: anderson-family.ca
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: node-service
+          servicePort: 80
+  - host: www.anderson-family.ca
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: node-service
+          servicePort: 80
+  - host: ci.anderson-family.ca
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: jenkins-service
+          servicePort: 8080

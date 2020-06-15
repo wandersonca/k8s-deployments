@@ -21,3 +21,7 @@ spec:
         backend:
           serviceName: transmission-service
           servicePort: 9091
+      - path: /plexserver
+        backend:
+          serviceName: plexserver-service
+          servicePort: 32400
